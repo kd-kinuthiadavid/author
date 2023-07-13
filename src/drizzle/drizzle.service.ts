@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import {
-  PlanetScaleDatabase,
-  drizzle,
-} from 'drizzle-orm/planetscale-serverless';
-import { connect } from '@planetscale/database';
+import { drizzle } from 'drizzle-orm/mysql2';
+import { createConnection } from 'mysql2/promise';
 import { ConfigService } from '@nestjs/config';
+import { migrate } from 'drizzle-orm/mysql2/migrator';
 
 import schema from './schema';
 
@@ -12,14 +10,16 @@ import schema from './schema';
 export class DbConnectionService {
   constructor(private readonly configService: ConfigService) {}
 
-  public createConnection() {
-    const connection = connect({
-      host: this.configService.get<'string'>('DATABASE_HOST'),
-      username: this.configService.get<'string'>('DATABASE_USERNAME'),
-      password: this.configService.get<'string'>('DATABASE_PASSWORD'),
-    });
-    return drizzle(connection, { schema: { ...schema } });
+  async createConnection() {
+    const connection = await createConnection(
+      this.configService.get<'string'>('DATABASE_URL'),
+    );
+
+    const dbInstance = drizzle(connection, { schema: { ...schema } });
+
+    await migrate(dbInstance, { migrationsFolder: 'drizzle' });
+    return dbInstance;
   }
 
-  public db = this.createConnection();
+  db = this.createConnection();
 }

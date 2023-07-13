@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import dbConfig from './drizzle/config/dbConfig';
+import { drizzleConfig } from 'drizzle.config';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import dbConfig from './drizzle/config/dbConfig';
     ConfigModule.forRoot({
       isGlobal: true,
       ignoreEnvFile: true,
-      load: [dbConfig],
+      load: [dbConfig, drizzleConfig],
     }),
     UsersModule,
   ],

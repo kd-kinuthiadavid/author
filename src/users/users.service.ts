@@ -11,8 +11,8 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return this.dbConnection.db.query.users.findMany();
+  async findAll() {
+    return (await this.dbConnection.db).query.users.findMany();
   }
 
   findOne(id: number) {
