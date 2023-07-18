@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DrizzleModule } from './drizzle/drizzle.module';
+import { DbModule } from './db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
-import dbConfig from './drizzle/config/dbConfig';
+import dbConfig from './db/config/dbConfig';
 import { drizzleConfig } from 'drizzle.config';
 
 @Module({
   imports: [
-    DrizzleModule,
+    DbModule,
     // @see: https://docs.nestjs.com/techniques/configuration#configuration for more info
     ConfigModule.forRoot({
       isGlobal: true,
