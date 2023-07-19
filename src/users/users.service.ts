@@ -13,95 +13,74 @@ import { eq } from 'drizzle-orm';
 export class UsersService {
   constructor(private dbConnection: DbConnectionService) {}
 
-  async create(createUserDto: CreateUserDto) {
+  private async handleError(action: () => Promise<any>, errorMessage: string) {
     try {
-      return await (await this.dbConnection.db)
-        .insert(users)
-        .values(createUserDto);
+      return await action();
     } catch (error) {
-      if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('User Creation Failed', {
-          cause: new Error(),
-          description: error.message,
-        });
-      } else {
-        throw new InternalServerErrorException('User Creation Failed', {
-          cause: new Error(error.message),
-          description: error.message,
-        });
-      }
+      throw new InternalServerErrorException(errorMessage, {
+        cause: new Error(error.message),
+        description: error.message,
+      });
     }
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.insert(users).values(createUserDto);
+    }
+
+    return await this.handleError(action, 'User Creation Failed');
   }
 
   async findAll() {
-    try {
-      return await (await this.dbConnection.db).query.users.findMany();
-    } catch (error) {
-      throw new InternalServerErrorException("Couldn't Fetch Users", {
-        cause: new Error(error.message),
-        description: error.message,
-      });
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.query.users.findMany();
     }
+
+    return await this.handleError(action, "Couldn't Fetch Users");
   }
 
   async findOne(id: number) {
-    try {
-      return await (await this.dbConnection.db)
-        .select()
-        .from(users)
-        .where(eq(users.id, id));
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Couldn't fetch user with the provided id: ${id}`,
-        {
-          cause: new Error(error.message),
-          description: error.message,
-        },
-      );
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.select().from(users).where(eq(users.id, id));
     }
+
+    return await this.handleError(
+      action,
+      `Couldn't fetch user with the provided id: ${id}`,
+    );
   }
 
   async findByEmail(email: string) {
-    try {
-      return await (await this.dbConnection.db)
-        .select()
-        .from(users)
-        .where(eq(users.email, email));
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Couldn't fetch user with the provided email: ${email}`,
-        {
-          cause: new Error(error.message),
-          description: error.message,
-        },
-      );
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.select().from(users).where(eq(users.email, email));
     }
+
+    return await this.handleError(
+      action,
+      `Couldn't fetch user with the provided email: ${email}`,
+    );
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    try {
-      return await (await this.dbConnection.db)
-        .update(users)
-        .set(updateUserDto)
-        .where(eq(users.id, id));
-    } catch (error) {
-      throw new InternalServerErrorException(`Updating User ${id} Failed`, {
-        cause: new Error(error.message),
-        description: error.message,
-      });
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.update(users).set(updateUserDto).where(eq(users.id, id));
     }
+
+    return await this.handleError(action, `Updating User ${id} Failed`);
   }
 
   async remove(id: number) {
-    try {
-      return await (await this.dbConnection.db)
-        .delete(users)
-        .where(eq(users.id, id));
-    } catch (error) {
-      throw new InternalServerErrorException(`Deleting User ${id} Failed`, {
-        cause: new Error(error.message),
-        description: error.message,
-      });
+    const db = await this.dbConnection.db;
+    async function action() {
+      return await db.delete(users).where(eq(users.id, id));
     }
+
+    return await this.handleError(action, `Deleting User ${id} Failed`);
   }
 }
