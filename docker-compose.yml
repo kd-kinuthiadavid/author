@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Set environment variables required for your NestJS application to connect to PlanetScale
+    environment:
+      - DOPPLER_TOKEN=${DOPPLER_TOKEN}
+    # Expose the port that your NestJS application listens on (must match the port defined in the Dockerfile)
+    ports:
+      - "3000:3000"
