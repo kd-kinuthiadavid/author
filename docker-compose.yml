@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: author-container
+    image: author-img
     # Set environment variables required for your NestJS application to connect to PlanetScale
     environment:
       - DOPPLER_TOKEN=${DOPPLER_TOKEN}
