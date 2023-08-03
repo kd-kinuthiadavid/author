@@ -1,4 +1,4 @@
-name: Deploy to the stg instance in Railway
+name: Deploy To Railway (PROD)
 on:
     push:
         branches:
