@@ -3,10 +3,6 @@ on:
     push:
         branches:
             - 'main'
-            - 'dev-add-basic-devops'
-    pull_request:
-        types:
-            - opened
 jobs:
     deploy:
         runs-on: ubuntu-latest
