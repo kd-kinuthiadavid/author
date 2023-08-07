@@ -25,11 +25,7 @@ export class DbConnectionService {
       const connection = await this.getConnection();
       const dbInstance = drizzle(connection, { schema: { ...schema } });
       this.logger.log('Success. Successfully connected to the database');
-      this.loadMigrationConfig(dbInstance)
-        .then(() => this.logger.log('migrations config successfully loaded'))
-        .catch((err) =>
-          this.logger.error('error loading migrations config', err),
-        );
+      await this.loadMigrationConfig(dbInstance);
       return dbInstance;
     } catch (error) {
       this.logger.error(
