@@ -1,4 +1,4 @@
-CREATE TABLE `users` (
+CREATE TABLE if not exists `users` (
 	`id` serial AUTO_INCREMENT PRIMARY KEY NOT NULL,
 	`username` text NOT NULL,
 	`firstName` text NOT NULL,
