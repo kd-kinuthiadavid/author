@@ -11,24 +11,38 @@ export class DbConnectionService {
   private readonly logger = new Logger(DbConnectionService.name);
   constructor(private readonly configService: ConfigService) {}
 
-  async connect() {
-    this.logger.log('Establishing database connection ...');
-    try {
-      const connection = await createConnection(
-        this.configService.get<'string'>('DATABASE_URL'),
-      );
-      const dbInstance = drizzle(connection, { schema: { ...schema } });
+  private getConnection() {
+    return createConnection(this.configService.get<'string'>('DATABASE_URL'));
+  }
 
-      await migrate(dbInstance, { migrationsFolder: 'drizzle' });
-      this.logger.log(
-        "Database connection established. We've successfully connected to the database.",
-      );
+  private loadMigrationConfig(dbInstance) {
+    return migrate(dbInstance, { migrationsFolder: 'drizzle' });
+  }
+
+  async getDbInstance() {
+    try {
+      this.logger.log('Establishing database connection ...');
+      const connection = await this.getConnection();
+      const dbInstance = drizzle(connection, { schema: { ...schema } });
+      this.logger.log('Success. Successfully connected to the database');
+      this.loadMigrationConfig(dbInstance)
+        .then(() => this.logger.log('migrations config successfully loaded'))
+        .catch((err) =>
+          this.logger.error('error loading migrations config', err),
+        );
       return dbInstance;
     } catch (error) {
-      //
-      this.logger.error('Connection to the database failed.', error);
+      this.logger.error(
+        'Database Connection Failed. Error connecting to the database',
+        error,
+      );
     }
   }
 
-  db = this.connect();
+  async closeDatabaseConnection() {
+    const connection = await this.getConnection();
+    return connection.end();
+  }
+
+  db = this.getDbInstance();
 }
