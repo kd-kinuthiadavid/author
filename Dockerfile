@@ -2,10 +2,10 @@
 FROM node:lts
 
 # Set the image name
-LABEL www.useauthor.image-name="author-img"
+LABEL www.useauthor.image-name="kinuthiadavidio/author-api"
 
 # Set the container name
-LABEL www.useauthor.container-name="author-container"
+LABEL www.useauthor.container-name="kinuthiadavidio/author"
 
 # Set the working directory in the container
 WORKDIR /app
