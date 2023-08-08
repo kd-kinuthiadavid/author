@@ -19,7 +19,12 @@ jobs:
             - name: Install Railway
               run: npm i -g @railway/cli
 
-            - name: Deploy
+            - name: Install Doppler CLI
+              uses: dopplerhq/cli-action@v2
+            - name: Run start.sh
+              run: export DOPPLER_TOKEN="$(doppler configs tokens create --project author --config dev docker-dev-token --plain)"
+
+            - name: Deploy To PRD
               run: railway up
               env:
                 RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRD }}
