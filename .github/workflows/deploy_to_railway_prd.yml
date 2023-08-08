@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - 'main'
+            - 'debug-failing-ga-deployments'
 jobs:
     deploy:
         runs-on: ubuntu-latest
