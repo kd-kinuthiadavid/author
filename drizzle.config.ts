@@ -2,7 +2,7 @@ import type { Config } from 'drizzle-kit';
 
 export function drizzleConfig() {
   return {
-    schema: './src/drizzle/schema/*',
+    schema: './src/db/schema/*',
     out: './drizzle',
     driver: 'mysql2',
     dbCredentials: {
