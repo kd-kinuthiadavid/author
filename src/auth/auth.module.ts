@@ -3,18 +3,13 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 import { DbConnectionService } from 'src/db/db.service';
 import { PassportModule } from '@nestjs/passport';
-import { GoogleStrategy } from './auth.google.strategy';
 import { AuthController } from './auth.controller';
+import { GoogleModule } from './google/google.module';
 
 @Module({
-  providers: [
-    AuthService,
-    UsersService,
-    DbConnectionService,
-    PassportModule,
-    GoogleStrategy,
-  ],
+  providers: [AuthService, UsersService, DbConnectionService, PassportModule],
   exports: [AuthService],
   controllers: [AuthController],
+  imports: [GoogleModule],
 })
 export class AuthModule {}

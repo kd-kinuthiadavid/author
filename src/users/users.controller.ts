@@ -11,7 +11,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { GoogleAuthGuard } from 'src/auth/google.guard';
+import { GoogleAuthGuard } from 'src/auth/google/google.guard';
 
 @UseGuards(GoogleAuthGuard)
 @Controller('users')
