@@ -17,4 +17,8 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   phoneNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  password?: string;
 }
