@@ -1,10 +1,7 @@
 import { Controller, Get, Request, UseGuards, Logger } from '@nestjs/common';
-import { CreateGoogleDto } from './dto/create-google.dto';
-import { UpdateGoogleDto } from './dto/update-google.dto';
-import { GoogleAuthGuard } from './google.guard';
-import { LocalAuthGuard } from '../local.guard';
+import { JwtAuthGuard } from '../jwt.guard';
 
-@UseGuards(LocalAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('auth/google')
 export class GoogleController {
   private readonly logger = new Logger(GoogleController.name);
