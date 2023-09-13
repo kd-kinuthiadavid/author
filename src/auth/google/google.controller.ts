@@ -1,7 +1,7 @@
 import { Controller, Get, Request, UseGuards, Logger } from '@nestjs/common';
-import { JwtAuthGuard } from '../jwt.guard';
+import { GoogleAuthGuard } from './google.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(GoogleAuthGuard)
 @Controller('auth/google')
 export class GoogleController {
   private readonly logger = new Logger(GoogleController.name);
