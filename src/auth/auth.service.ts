@@ -4,12 +4,16 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(email: string) {
     const user = await this.usersService.findByEmail(email);
@@ -48,5 +52,11 @@ export class AuthService {
       return user;
     }
     return user;
+  }
+
+  async generateToken(username: string, email: string) {
+    return {
+      access_token: this.jwtService.sign({ username, email }),
+    };
   }
 }

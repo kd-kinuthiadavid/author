@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { GoogleModule } from './google/google.module';
 import { LocalStrategy } from './local.strategy';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [
@@ -17,6 +18,12 @@ import { LocalStrategy } from './local.strategy';
   ],
   exports: [AuthService],
   controllers: [AuthController],
-  imports: [GoogleModule],
+  imports: [
+    GoogleModule,
+    JwtModule.register({
+      secret: process.env['JWT_SECRET'],
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
 })
 export class AuthModule {}

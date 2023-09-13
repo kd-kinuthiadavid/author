@@ -4,9 +4,16 @@ import { GoogleController } from './google.controller';
 import { AuthService } from '../auth.service';
 import { UsersService } from 'src/users/users.service';
 import { DbConnectionService } from 'src/db/db.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [GoogleController],
-  providers: [GoogleService, AuthService, UsersService, DbConnectionService],
+  providers: [
+    GoogleService,
+    AuthService,
+    UsersService,
+    DbConnectionService,
+    JwtService,
+  ],
 })
 export class GoogleModule {}
