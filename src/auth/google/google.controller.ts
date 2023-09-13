@@ -2,15 +2,15 @@ import { Controller, Get, Request, UseGuards, Logger } from '@nestjs/common';
 import { CreateGoogleDto } from './dto/create-google.dto';
 import { UpdateGoogleDto } from './dto/update-google.dto';
 import { GoogleAuthGuard } from './google.guard';
+import { LocalAuthGuard } from '../local.guard';
 
-@UseGuards(GoogleAuthGuard)
+@UseGuards(LocalAuthGuard)
 @Controller('auth/google')
 export class GoogleController {
   private readonly logger = new Logger(GoogleController.name);
 
   @Get('/login')
   async googleLogin(@Request() req) {
-    this.logger.log('------ login: google ------', req.user);
     return req.user;
   }
 

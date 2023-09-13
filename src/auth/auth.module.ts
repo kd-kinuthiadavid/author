@@ -5,9 +5,16 @@ import { DbConnectionService } from 'src/db/db.service';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { GoogleModule } from './google/google.module';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
-  providers: [AuthService, UsersService, DbConnectionService, PassportModule],
+  providers: [
+    AuthService,
+    UsersService,
+    DbConnectionService,
+    PassportModule,
+    LocalStrategy,
+  ],
   exports: [AuthService],
   controllers: [AuthController],
   imports: [GoogleModule],

@@ -12,8 +12,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GoogleAuthGuard } from 'src/auth/google/google.guard';
+import { LocalAuthGuard } from 'src/auth/local.guard';
 
-@UseGuards(GoogleAuthGuard)
+@UseGuards(LocalAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}

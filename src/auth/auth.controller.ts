@@ -11,7 +11,13 @@ import {
   Logger,
 } from '@nestjs/common';
 import { GoogleAuthGuard } from './google/google.guard';
+import { LocalAuthGuard } from './local.guard';
 
-@UseGuards(GoogleAuthGuard)
+@UseGuards(LocalAuthGuard)
 @Controller('auth')
-export class AuthController {}
+export class AuthController {
+  @Post('login')
+  async login(@Request() req) {
+    return req.user;
+  }
+}
