@@ -7,6 +7,7 @@ import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import dbConfig from './db/config/dbConfig';
 import { drizzleConfig } from 'drizzle.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { drizzleConfig } from 'drizzle.config';
       load: [dbConfig, drizzleConfig],
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController, UsersController],
   providers: [AppService],

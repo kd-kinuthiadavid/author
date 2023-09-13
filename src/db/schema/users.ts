@@ -12,6 +12,7 @@ const users = mysqlTable('users', {
   username: text('username').notNull(),
   firstName: text('firstName').notNull(),
   lastName: text('lastName').notNull(),
+  password: text('password'),
   email: varchar('email', { length: 256 }).notNull().unique(),
   phoneNumber: varchar('phoneNumber', { length: 256 }),
   createdAt: timestamp('createdAt').notNull().defaultNow(),

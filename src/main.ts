@@ -5,9 +5,19 @@ import {
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // configure session
+  app.use(
+    session({
+      secret: process.env['SESSION_SECRET'],
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Author: Authentication, Authorization & User Management.')
@@ -23,6 +33,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
   const port = process.env.PORT || 3000;
 
+  app.enableCors();
   await app.listen(port, '0.0.0.0');
 }
 bootstrap();
