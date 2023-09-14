@@ -1,10 +1,12 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -58,5 +60,24 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign({ username, email }),
     };
+  }
+
+  async register(clientDetails: CreateUserDto) {
+    try {
+      const result = await this.usersService.create(clientDetails);
+      this.logger.log('User registration was successfull');
+      return {
+        access_token: this.jwtService.sign({
+          username: clientDetails.username,
+          email: clientDetails.email,
+        }),
+      };
+    } catch (error) {
+      this.logger.error('User Registration Failed', error);
+      throw new InternalServerErrorException('Registration Failed', {
+        cause: new Error(error.message),
+        description: error.message,
+      });
+    }
   }
 }
