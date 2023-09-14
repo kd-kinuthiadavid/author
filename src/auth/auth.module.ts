@@ -7,7 +7,7 @@ import { AuthController } from './auth.controller';
 import { GoogleModule } from './google/google.module';
 import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtService } from './jwt.service';
+import { JwtInternalModule } from './jwt/jwt.module';
 
 @Module({
   providers: [
@@ -16,7 +16,6 @@ import { JwtService } from './jwt.service';
     DbConnectionService,
     PassportModule,
     LocalStrategy,
-    JwtService,
   ],
   exports: [AuthService],
   controllers: [AuthController],
@@ -26,6 +25,7 @@ import { JwtService } from './jwt.service';
       secret: process.env['JWT_SECRET'],
       signOptions: { expiresIn: '60s' },
     }),
+    JwtInternalModule,
   ],
 })
 export class AuthModule {}
